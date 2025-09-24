@@ -1,0 +1,50 @@
+package exam.react.io.service;
+
+import exam.react.io.domain.entity.Todo;
+import exam.react.io.domain.request.CreationRequest;
+import exam.react.io.domain.request.ModificationRequest;
+import exam.react.io.domain.response.TodoListResponse;
+import exam.react.io.domain.response.TodoResponse;
+import exam.react.io.repository.TodoRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Slf4j
+public class TodoService {
+
+    public TodoListResponse list() {
+        List<Todo> elements = TodoRepository.selectAll();
+        TodoListResponse response = TodoListResponse.createEmpty();
+        elements.forEach(response::add);
+
+        return response;
+    }
+
+    public TodoResponse details(String signature) {
+        Todo element = TodoRepository.select(signature);
+        return TodoResponse.exchange(element);
+    }
+
+    public boolean insert(CreationRequest req) {
+        Todo inserted = TodoRepository.insert(Todo.exchange(req));
+        if (inserted == null) throw new IllegalStateException("insert failed");
+        return true;
+    }
+
+    public TodoResponse modify(ModificationRequest req) {
+        Todo modified = TodoRepository.modify(req);
+
+        return TodoResponse.exchange(modified);
+    }
+
+    public boolean remove(String signature) {
+        boolean removed = TodoRepository.remove(signature, "remover");
+
+        if (!removed) throw new IllegalStateException("remove failed");
+
+        return true;
+    }
+}
