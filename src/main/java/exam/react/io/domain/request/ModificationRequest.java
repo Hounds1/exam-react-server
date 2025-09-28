@@ -12,6 +12,7 @@ public class ModificationRequest {
 
     private String signature;
     private String title;
-    private String body;
+    private String dueDate;
+    private String priority;
     private String modifiedBy;
 }

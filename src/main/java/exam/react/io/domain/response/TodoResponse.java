@@ -10,7 +10,9 @@ public class TodoResponse {
 
     private String signature;
     private String title;
-    private String body;
+    private String dueDate;
+    private String priority;
+    private boolean completed;
     private long generatedAt;
     private String generatedBy;
     private long modifiedAt;
@@ -19,7 +21,7 @@ public class TodoResponse {
     private String removedBy;
 
     public static TodoResponse exchange(Todo origin) {
-        return new TodoResponse(origin.getSignature(), origin.getTitle(), origin.getBody(), origin.getGeneratedAt(),
+        return new TodoResponse(origin.getSignature(), origin.getTitle(), origin.getDueDate(), origin.getPriority(), origin.isCompleted(), origin.getGeneratedAt(),
                 origin.getGeneratedBy(), origin.getModifiedAt(), origin.getModifiedBy(), origin.getRemovedAt(), origin.getRemovedBy());
     }
 }

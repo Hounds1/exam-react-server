@@ -23,7 +23,10 @@ public class TodoRepository {
     public static List<Todo> selectAll() {
         log.info("Select command inbound.");
         log.info("Containing {} elements.", CONTAINER.size());
-        return List.copyOf(CONTAINER.values());
+
+        return CONTAINER.values().stream()
+                .filter(e -> !e.isRemoved())
+                .toList();
     }
 
     public static Todo insert(Todo e) {

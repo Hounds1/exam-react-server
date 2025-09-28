@@ -20,7 +20,6 @@ public class TodoController {
     @GetMapping("/list")
     public ResponseEntity<TodoListResponse> list() {
         TodoListResponse res = todoService.list();
-
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -30,18 +29,30 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PostMapping
-    public ResponseEntity<TodoResponse> creation(CreationRequest insReq) {
-        TodoResponse response = todoService.insert(insReq);
+    @PatchMapping("/{signature}/complete")
+    public ResponseEntity<TodoResponse> complete(@PathVariable String signature) {
+        TodoResponse res = todoService.complete(signature);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
 
-        if (response != null) return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @PatchMapping("/{signature}/incomplete")
+    public ResponseEntity<TodoResponse> incomplete(@PathVariable String signature) {
+        TodoResponse res = todoService.incomplete(signature);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @PostMapping
+    public ResponseEntity<TodoResponse> creation(@RequestBody CreationRequest insReq) {
+        TodoResponse res = todoService.insert(insReq);
+
+        if (res != null) return ResponseEntity.status(HttpStatus.CREATED).body(res);
         else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @PatchMapping
-    public ResponseEntity<TodoResponse> modification(ModificationRequest modReq) {
-        TodoResponse response = todoService.modify(modReq);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<TodoResponse> modification(@RequestBody ModificationRequest modReq) {
+        TodoResponse res = todoService.modify(modReq);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @DeleteMapping("/{signature}")

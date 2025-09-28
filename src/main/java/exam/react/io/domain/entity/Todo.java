@@ -11,7 +11,9 @@ public class Todo {
 
     private final String signature;
     private String title;
-    private String body;
+    private String dueDate;
+    private String priority;
+    private boolean completed;
     private final long generatedAt;
     private final String generatedBy;
     private long modifiedAt;
@@ -23,7 +25,9 @@ public class Todo {
     private Todo(CreationRequest req) {
         this.signature = req.getSignature();
         this.title = req.getTitle() == null ? "title" : req.getTitle();
-        this.body = req.getBody() == null ? "body" : req.getBody();
+        this.dueDate = req.getDueDate();
+        this.priority = req.getPriority();
+        this.completed = false;
         this.generatedAt = req.getGeneratedAt();
         this.generatedBy = req.getGeneratedBy();
         this.modifiedAt = GlobalPolicyProvider.TIME_SENTINEL;
@@ -35,9 +39,14 @@ public class Todo {
         return new Todo(req);
     }
 
+    public void switchCompleted() {
+        this.completed = !completed;
+    }
+
     public void transition(ModificationRequest feature) {
         this.title = feature.getTitle();
-        this.body = feature.getBody();
+        this.dueDate = feature.getDueDate();
+        this.priority = feature.getPriority();
         this.modifiedAt = ChronoSupport.epoch();
         this.modifiedBy = feature.getModifiedBy();
     }

@@ -15,7 +15,8 @@ public class CreationRequest {
 
     private final String signature = UUID.randomUUID().toString();
     private String title;
-    private String body;
-    private String generatedBy;
+    private String priority;
+    private String dueDate;
+    private final String generatedBy = "Some User";
     private final long generatedAt = ChronoSupport.epoch();
 }

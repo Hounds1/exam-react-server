@@ -28,6 +28,20 @@ public class TodoService {
         return TodoResponse.exchange(element);
     }
 
+    public TodoResponse complete(final String signature) {
+        Todo element = TodoRepository.select(signature);
+
+        if (!element.isCompleted()) element.switchCompleted();
+        return TodoResponse.exchange(element);
+    }
+
+    public TodoResponse incomplete(final String signature) {
+        Todo element = TodoRepository.select(signature);
+
+        if (element.isCompleted()) element.switchCompleted();
+        return TodoResponse.exchange(element);
+    }
+
     public TodoResponse insert(CreationRequest req) {
         Todo inserted = TodoRepository.insert(Todo.exchange(req));
         if (inserted == null) throw new IllegalStateException("insert failed");
