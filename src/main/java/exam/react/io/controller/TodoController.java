@@ -31,10 +31,10 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> creation(CreationRequest insReq) {
-        boolean inserted = todoService.insert(insReq);
+    public ResponseEntity<TodoResponse> creation(CreationRequest insReq) {
+        TodoResponse response = todoService.insert(insReq);
 
-        if (inserted) return ResponseEntity.status(HttpStatus.CREATED).build();
+        if (response != null) return ResponseEntity.status(HttpStatus.CREATED).body(response);
         else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

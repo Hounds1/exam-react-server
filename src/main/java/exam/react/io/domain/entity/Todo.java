@@ -22,8 +22,8 @@ public class Todo {
 
     private Todo(CreationRequest req) {
         this.signature = req.getSignature();
-        this.title = req.getTitle();
-        this.body = req.getBody();
+        this.title = req.getTitle() == null ? "title" : req.getTitle();
+        this.body = req.getBody() == null ? "body" : req.getBody();
         this.generatedAt = req.getGeneratedAt();
         this.generatedBy = req.getGeneratedBy();
         this.modifiedAt = GlobalPolicyProvider.TIME_SENTINEL;

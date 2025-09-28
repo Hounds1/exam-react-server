@@ -18,7 +18,7 @@ public class TodoService {
     public TodoListResponse list() {
         List<Todo> elements = TodoRepository.selectAll();
         TodoListResponse response = TodoListResponse.createEmpty();
-        elements.forEach(response::add);
+        elements.forEach(e -> { if (!e.isRemoved()) response.add(e); });
 
         return response;
     }
@@ -28,10 +28,11 @@ public class TodoService {
         return TodoResponse.exchange(element);
     }
 
-    public boolean insert(CreationRequest req) {
+    public TodoResponse insert(CreationRequest req) {
         Todo inserted = TodoRepository.insert(Todo.exchange(req));
         if (inserted == null) throw new IllegalStateException("insert failed");
-        return true;
+
+        return TodoResponse.exchange(inserted);
     }
 
     public TodoResponse modify(ModificationRequest req) {
