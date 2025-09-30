@@ -3,22 +3,30 @@ package exam.react.io.service;
 import exam.react.io.domain.entity.Todo;
 import exam.react.io.domain.request.CreationRequest;
 import exam.react.io.domain.request.ModificationRequest;
+import exam.react.io.domain.request.TodoSearchRequest;
 import exam.react.io.domain.response.TodoListResponse;
 import exam.react.io.domain.response.TodoResponse;
 import exam.react.io.repository.TodoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
 public class TodoService {
 
-    public TodoListResponse list() {
+    public TodoListResponse list(TodoSearchRequest req) {
         List<Todo> elements = TodoRepository.selectAll();
         TodoListResponse response = TodoListResponse.createEmpty();
-        elements.forEach(e -> { if (!e.isRemoved()) response.add(e); });
+
+        Stream<Todo> stream = elements.stream();
+        stream = stream.filter(e -> !e.isRemoved());
+        if (StringUtils.hasText(req.getKeyword())) stream = stream.filter(e-> e.getTitle().contains(req.getKeyword()));
+
+        stream.toList().forEach(response::add);
 
         return response;
     }

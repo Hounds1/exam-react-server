@@ -2,6 +2,7 @@ package exam.react.io.controller;
 
 import exam.react.io.domain.request.CreationRequest;
 import exam.react.io.domain.request.ModificationRequest;
+import exam.react.io.domain.request.TodoSearchRequest;
 import exam.react.io.domain.response.TodoListResponse;
 import exam.react.io.domain.response.TodoResponse;
 import exam.react.io.service.TodoService;
@@ -18,8 +19,8 @@ public class TodoController {
     private final TodoService todoService;
 
     @GetMapping("/list")
-    public ResponseEntity<TodoListResponse> list() {
-        TodoListResponse res = todoService.list();
+    public ResponseEntity<TodoListResponse> list(TodoSearchRequest req) {
+        TodoListResponse res = todoService.list(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
